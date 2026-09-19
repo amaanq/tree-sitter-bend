@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-bend2"
 description = "Bend grammar for tree-sitter"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Amaan Qureshi <contact@amaanq.com>"]
 license = "MIT"
 readme = "README.md"

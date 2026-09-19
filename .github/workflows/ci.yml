@@ -44,6 +44,7 @@ jobs:
           test-python: true
           test-go: true
           test-swift: true
+          swift-version: "6.4"
       - name: Set up examples
         run: |-
           git clone https://github.com/bendlang/bend examples/bend --single-branch --depth=1 --filter=blob:none

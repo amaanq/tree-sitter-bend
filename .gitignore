@@ -30,3 +30,5 @@
 !src/**
 !test/
 !test/**
+
+bindings/python/*.egg-info/

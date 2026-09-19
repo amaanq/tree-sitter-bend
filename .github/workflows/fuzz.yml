@@ -20,6 +20,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+      - name: Set up examples
+        run: |-
+          git clone https://github.com/bendlang/bend examples/bend --single-branch --depth=1 --filter=blob:none
       - name: Run fuzzer
         uses: tree-sitter/fuzz-action@v4
         with:

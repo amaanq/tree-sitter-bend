@@ -129,7 +129,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: pip install --upgrade pip build
+        run: pip install --upgrade pip build setuptools wheel
       - name: Build sources
         run: python -mbuild -n -s
       - name: Upload sources

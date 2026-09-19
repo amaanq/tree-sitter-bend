@@ -1,6 +1,6 @@
 LANGUAGE_NAME := tree-sitter-bend
 HOMEPAGE_URL := https://github.com/amaanq/tree-sitter-bend
-VERSION := 0.1.1
+VERSION := 0.1.2
 DESCRIPTION := Bend grammar for tree-sitter
 
 # repository

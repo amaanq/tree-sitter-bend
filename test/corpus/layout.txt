@@ -1,0 +1,239 @@
+================================================================================
+Inline bodies
+================================================================================
+
+def main(): \{}
+
+def notb(b): match b:
+  case Tt7{}:
+    Ff7{}
+  case Ff7{}:
+    Tt7{}
+
+def f.go(z):
+  match z:
+   case True{}: 5
+        case False{}:
+      6
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (block
+      (match_expression)))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (match_statement
+        (identifier)
+        (case_clause
+          (constructor_pattern
+            (identifier))
+          (block
+            (constructor
+              (identifier))))
+        (case_clause
+          (constructor_pattern
+            (identifier))
+          (block
+            (constructor
+              (identifier)))))))
+  (function_definition
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (match_statement
+        (identifier)
+        (case_clause
+          (constructor_pattern
+            (identifier))
+          (block
+            (integer)))
+        (case_clause
+          (constructor_pattern
+            (identifier))
+          (block
+            (integer)))))))
+
+================================================================================
+Deeper do statements
+================================================================================
+
+def f():
+  do Result<&2, &2, U32, U32>:
+  x : U32 <- Done{1}
+    return x
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (block
+      (do_block
+        (identifier)
+        (quantity)
+        (quantity)
+        (identifier)
+        (identifier)
+        (block
+          (bind_statement
+            (identifier)
+            (identifier)
+            (constructor
+              (identifier)
+              (integer)))
+          (return_statement
+            (identifier)))))))
+
+================================================================================
+Continuation lines
+================================================================================
+
+def Tri.out(
+  ax: U32, ay: U32,
+  x0: U32, y0: U32)
+  -> Bool:
+  (Tri.side(ax, ay, bx, by, x0, y0) && Tri.side(ax, ay, bx, by, x1, y0)
+    && Tri.side(ax, ay, bx, by, x0, y1)
+    || Tri.out(256, 64, 64, 448, x0, y0, x1, y1))
+
+def shift(k: U32) -> U32:
+  (k
+    >> bit .&. 1 : U32)
+
+law undo:
+  for a: Nat
+  {undo(l, a) == cat(l, a) : Log}
+  & {size(l) == Nat.sub(n, b) : Nat}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (parenthesized_expression
+        (binary_expression
+          (binary_expression
+            (binary_expression
+              (call
+                (scoped_identifier
+                  (identifier)
+                  (identifier))
+                (arguments
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier)))
+              (call
+                (scoped_identifier
+                  (identifier)
+                  (identifier))
+                (arguments
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier))))
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (identifier)
+                (identifier)
+                (identifier)
+                (identifier)
+                (identifier))))
+          (call
+            (scoped_identifier
+              (identifier)
+              (identifier))
+            (arguments
+              (integer)
+              (integer)
+              (integer)
+              (integer)
+              (identifier)
+              (identifier)
+              (identifier)
+              (identifier)))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (parenthesized_expression
+        (binary_expression
+          (binary_expression
+            (identifier)
+            (identifier))
+          (integer))
+        (identifier))))
+  (law_declaration
+    (identifier)
+    (block
+      (for_clause
+        (identifier)
+        (identifier))
+      (binary_expression
+        (equality_type
+          (call
+            (identifier)
+            (arguments
+              (identifier)
+              (identifier)))
+          (call
+            (identifier)
+            (arguments
+              (identifier)
+              (identifier)))
+          (identifier))
+        (equality_type
+          (call
+            (identifier)
+            (arguments
+              (identifier)))
+          (call
+            (scoped_identifier
+              (identifier)
+              (identifier))
+            (arguments
+              (identifier)
+              (identifier)))
+          (identifier))))))

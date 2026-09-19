@@ -1,0 +1,666 @@
+================================================================================
+Literals
+================================================================================
+
+def main() -> U32:
+  a = 42
+  b = 3n
+  c = 1.5
+  d = 1.5e10
+  e = 'c'
+  f = '\n'
+  g = '\u{1F600}'
+  h = "s\t\"q\" \u{7}"
+  i = [1, 2, 3]
+  j = (1, 2, 3)
+  k = 'c' <> "s" <> i
+  l = &2
+  a
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (integer))
+      (let_statement
+        (identifier)
+        (natural))
+      (let_statement
+        (identifier)
+        (float))
+      (let_statement
+        (identifier)
+        (float))
+      (let_statement
+        (identifier)
+        (char
+          (character)))
+      (let_statement
+        (identifier)
+        (char
+          (escape_sequence)))
+      (let_statement
+        (identifier)
+        (char
+          (escape_sequence)))
+      (let_statement
+        (identifier)
+        (string
+          (string_content)
+          (escape_sequence)
+          (escape_sequence)
+          (string_content)
+          (escape_sequence)
+          (string_content)
+          (escape_sequence)))
+      (let_statement
+        (identifier)
+        (list
+          (integer)
+          (integer)
+          (integer)))
+      (let_statement
+        (identifier)
+        (tuple
+          (integer)
+          (integer)
+          (integer)))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (char
+            (character))
+          (binary_expression
+            (string
+              (string_content))
+            (identifier))))
+      (let_statement
+        (identifier)
+        (quantity))
+      (identifier))))
+
+================================================================================
+Types
+================================================================================
+
+def types() -> Type:
+  a = Type
+  b = Data
+  c = Kind(a <&> b)
+  d = Quant
+  e = A -> B
+  f = @x: A -> B
+  g = @-x: A -> @+y: B -> C
+  h = A & B
+  i = &x: A -> B
+  j = A | B
+  k = D<A>
+  l = +D<A>
+  m = D<&2, A>
+  n = List<List<A>>
+  o = {a == b : T}
+  p = {a != b : T}
+  q = Sigma<&1, &1, T, _ => T>
+  r = &s: Summary -> @k: Nat -> {denote(s,k) == f(k) : Nat}
+  a
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (kind)
+    (block
+      (let_statement
+        (identifier)
+        (kind))
+      (let_statement
+        (identifier)
+        (kind))
+      (let_statement
+        (identifier)
+        (kind
+          (binary_expression
+            (identifier)
+            (identifier))))
+      (let_statement
+        (identifier)
+        (kind))
+      (let_statement
+        (identifier)
+        (function_type
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (dependent_function_type
+          (identifier)
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (dependent_function_type
+          (identifier)
+          (identifier)
+          (dependent_function_type
+            (identifier)
+            (identifier)
+            (identifier))))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (exists_type
+          (identifier)
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (type_application
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (unary_expression
+          (type_application
+            (identifier)
+            (identifier))))
+      (let_statement
+        (identifier)
+        (type_application
+          (identifier)
+          (quantity)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (type_application
+          (identifier)
+          (type_application
+            (identifier)
+            (identifier))))
+      (let_statement
+        (identifier)
+        (equality_type
+          (identifier)
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (equality_type
+          (identifier)
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (type_application
+          (identifier)
+          (quantity)
+          (quantity)
+          (identifier)
+          (lambda
+            (identifier)
+            (block
+              (identifier)))))
+      (let_statement
+        (identifier)
+        (exists_type
+          (identifier)
+          (identifier)
+          (dependent_function_type
+            (identifier)
+            (identifier)
+            (equality_type
+              (call
+                (identifier)
+                (arguments
+                  (identifier)
+                  (identifier)))
+              (call
+                (identifier)
+                (arguments
+                  (identifier)))
+              (identifier)))))
+      (identifier))))
+
+================================================================================
+Operators
+================================================================================
+
+def ops(a: U32, b: U32) -> U32:
+  c = (a + b * c - d / e % f : U32)
+  d = (a .&. b .|. c .^. d << 2n >> 3n : U32)
+  e = (a < b && c <= d || e > f && g >= h : Bool)
+  f = a ++ b
+  g = h <> t
+  h = a & b | c
+  i = 1n+p
+  j = 1n+1n+Nat.add(p, 0n)
+  k = 1n + p
+  c
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (parenthesized_expression
+          (binary_expression
+            (binary_expression
+              (identifier)
+              (binary_expression
+                (identifier)
+                (identifier)))
+            (binary_expression
+              (binary_expression
+                (identifier)
+                (identifier))
+              (identifier)))
+          (identifier)))
+      (let_statement
+        (identifier)
+        (parenthesized_expression
+          (binary_expression
+            (binary_expression
+              (identifier)
+              (identifier))
+            (binary_expression
+              (identifier)
+              (binary_expression
+                (binary_expression
+                  (identifier)
+                  (natural))
+                (natural))))
+          (identifier)))
+      (let_statement
+        (identifier)
+        (parenthesized_expression
+          (binary_expression
+            (binary_expression
+              (binary_expression
+                (identifier)
+                (identifier))
+              (binary_expression
+                (identifier)
+                (identifier)))
+            (binary_expression
+              (binary_expression
+                (identifier)
+                (identifier))
+              (binary_expression
+                (identifier)
+                (identifier))))
+          (identifier)))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (identifier)
+          (binary_expression
+            (identifier)
+            (identifier))))
+      (let_statement
+        (identifier)
+        (successor
+          (natural)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (successor
+          (natural)
+          (successor
+            (natural)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (natural))))))
+      (let_statement
+        (identifier)
+        (binary_expression
+          (natural)
+          (identifier)))
+      (identifier))))
+
+================================================================================
+Calls
+================================================================================
+
+def calls() -> U32:
+  a = f(a, b)
+  b = f!(a)
+  c = t(~g, a)
+  d = adder(2)(1)
+  e = f()
+  g = K{a, b}
+  h = Nil{}
+  i = a[i]
+  j = App.run(~U32, ~App{+s => (s, Pix{s}), tick}, "Hello", 256, 256, 0)
+  a
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (identifier)
+            (identifier))))
+      (let_statement
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (identifier))))
+      (let_statement
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (template_argument
+              (identifier))
+            (identifier))))
+      (let_statement
+        (identifier)
+        (call
+          (call
+            (identifier)
+            (arguments
+              (integer)))
+          (arguments
+            (integer))))
+      (let_statement
+        (identifier)
+        (call
+          (identifier)
+          (arguments)))
+      (let_statement
+        (identifier)
+        (constructor
+          (identifier)
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (constructor
+          (identifier)))
+      (let_statement
+        (identifier)
+        (index_expression
+          (identifier)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (arguments
+            (template_argument
+              (identifier))
+            (template_argument
+              (constructor
+                (identifier)
+                (lambda
+                  (identifier)
+                  (block
+                    (tuple
+                      (identifier)
+                      (constructor
+                        (identifier)
+                        (identifier)))))
+                (identifier)))
+            (string
+              (string_content))
+            (integer)
+            (integer)
+            (integer))))
+      (identifier))))
+
+================================================================================
+Lambdas
+================================================================================
+
+def adder(k: U32) -> U32 -> U32:
+  x => (x + k : U32)
+
+def marked() -> U32:
+  +x => x
+
+def chain(): x => h2 => h3 =>
+  h3
+
+def retarget(v: Cert(f)) -> Cert(g):
+  match v:
+    case (+s,proof):
+      (s,k =>
+        +k = k
+        %eq(k) : {denote(s,k) == _ : Nat}
+        proof(k))
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (function_type
+      (identifier)
+      (identifier))
+    (block
+      (lambda
+        (identifier)
+        (block
+          (parenthesized_expression
+            (binary_expression
+              (identifier)
+              (identifier))
+            (identifier))))))
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (lambda
+        (identifier)
+        (block
+          (identifier)))))
+  (function_definition
+    (identifier)
+    (parameters)
+    (block
+      (lambda
+        (identifier)
+        (block
+          (lambda
+            (identifier)
+            (block
+              (lambda
+                (identifier)
+                (block
+                  (identifier)))))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (identifier)))))
+    (call
+      (identifier)
+      (arguments
+        (identifier)))
+    (block
+      (match_statement
+        (identifier)
+        (case_clause
+          (tuple_pattern
+            (quantified_pattern
+              (identifier))
+            (identifier))
+          (block
+            (tuple
+              (identifier)
+              (lambda
+                (identifier)
+                (block
+                  (let_statement
+                    (quantified_pattern
+                      (identifier))
+                    (identifier))
+                  (rewrite
+                    (call
+                      (identifier)
+                      (arguments
+                        (identifier)))
+                    (equality_type
+                      (call
+                        (identifier)
+                        (arguments
+                          (identifier)
+                          (identifier)))
+                      (identifier)
+                      (identifier)))
+                  (call
+                    (identifier)
+                    (arguments
+                      (identifier))))))))))))
+
+================================================================================
+Braces
+================================================================================
+
+def braces() -> U32:
+  a = {3 : U32}
+  b = {==}
+  c = \{}
+  d = \{Zero: z => z; Succ: Nat.add}
+  e = \{Con: (h => t => h); Nil: 0}
+  f = {s => e => e(Ob{}, Zb{}) : T}
+  g = ?goal
+  h = ?TODO
+  a
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (annotation
+          (integer)
+          (identifier)))
+      (let_statement
+        (identifier)
+        (reflexivity))
+      (let_statement
+        (identifier)
+        (match_expression))
+      (let_statement
+        (identifier)
+        (match_expression
+          (match_arm
+            (identifier)
+            (lambda
+              (identifier)
+              (block
+                (identifier))))
+          (match_arm
+            (identifier)
+            (scoped_identifier
+              (identifier)
+              (identifier)))))
+      (let_statement
+        (identifier)
+        (match_expression
+          (match_arm
+            (identifier)
+            (parenthesized_expression
+              (lambda
+                (identifier)
+                (block
+                  (lambda
+                    (identifier)
+                    (block
+                      (identifier)))))))
+          (match_arm
+            (identifier)
+            (integer))))
+      (let_statement
+        (identifier)
+        (annotation
+          (lambda
+            (identifier)
+            (block
+              (lambda
+                (identifier)
+                (block
+                  (call
+                    (identifier)
+                    (arguments
+                      (constructor
+                        (identifier))
+                      (constructor
+                        (identifier))))))))
+          (identifier)))
+      (let_statement
+        (identifier)
+        (hole
+          (identifier)))
+      (let_statement
+        (identifier)
+        (hole
+          (identifier)))
+      (identifier))))

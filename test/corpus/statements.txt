@@ -1,0 +1,686 @@
+================================================================================
+Lets
+================================================================================
+
+def main() -> U32:
+  x = 1
+  +y = (x + 1 : U32)
+  -A = U32
+  (a, b) = (1, 2)
+  Circle{r} = Circle{5}
+  a b = pow2(p) pow2(p)
+  +c +d = gen(d, U32.inc(s)) gen(d, U32.add(s, 2))
+  m n o = R.Cloth.step(~Stage.wind, cloak, o, face, t, 0.0)
+    R.Cloth.step(~Stage.wind, hood, o, face, t, 0.0)
+    R.Cloth.step(~Stage.wind, hair, o, face, t, 0.0)
+  (a + b : U32)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (integer))
+      (let_statement
+        (quantified_pattern
+          (identifier))
+        (parenthesized_expression
+          (binary_expression
+            (identifier)
+            (integer))
+          (identifier)))
+      (let_statement
+        (quantified_pattern
+          (identifier))
+        (identifier))
+      (let_statement
+        (tuple_pattern
+          (identifier)
+          (identifier))
+        (tuple
+          (integer)
+          (integer)))
+      (let_statement
+        (constructor_pattern
+          (identifier)
+          (identifier))
+        (constructor
+          (identifier)
+          (integer)))
+      (parallel_let_statement
+        (identifier)
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (identifier)))
+        (call
+          (identifier)
+          (arguments
+            (identifier))))
+      (parallel_let_statement
+        (quantified_pattern
+          (identifier))
+        (quantified_pattern
+          (identifier))
+        (call
+          (identifier)
+          (arguments
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)))))
+        (call
+          (identifier)
+          (arguments
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (integer))))))
+      (parallel_let_statement
+        (identifier)
+        (identifier)
+        (identifier)
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier)
+            (identifier))
+          (arguments
+            (template_argument
+              (scoped_identifier
+                (identifier)
+                (identifier)))
+            (identifier)
+            (identifier)
+            (identifier)
+            (identifier)
+            (float)))
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier)
+            (identifier))
+          (arguments
+            (template_argument
+              (scoped_identifier
+                (identifier)
+                (identifier)))
+            (identifier)
+            (identifier)
+            (identifier)
+            (identifier)
+            (float)))
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier)
+            (identifier))
+          (arguments
+            (template_argument
+              (scoped_identifier
+                (identifier)
+                (identifier)))
+            (identifier)
+            (identifier)
+            (identifier)
+            (identifier)
+            (float))))
+      (parenthesized_expression
+        (binary_expression
+          (identifier)
+          (identifier))
+        (identifier)))))
+
+================================================================================
+Array writes
+================================================================================
+
+def main() -> Array<U32> & U32:
+  a = [0 : U32*8n]
+  b = [0 : U32^3n]
+  a[5] <- 42
+  a[1] <- 1; c = a
+  fill(p, s, g[c] <- open(s, c))
+  a[5]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (binary_expression
+      (type_application
+        (identifier)
+        (identifier))
+      (identifier))
+    (block
+      (let_statement
+        (identifier)
+        (array
+          (integer)
+          (identifier)
+          (natural)))
+      (let_statement
+        (identifier)
+        (array
+          (integer)
+          (identifier)
+          (natural)))
+      (write_expression
+        (index_expression
+          (identifier)
+          (integer))
+        (integer))
+      (write_expression
+        (index_expression
+          (identifier)
+          (integer))
+        (integer))
+      (let_statement
+        (identifier)
+        (identifier))
+      (call
+        (identifier)
+        (arguments
+          (identifier)
+          (identifier)
+          (write_expression
+            (index_expression
+              (identifier)
+              (identifier))
+            (call
+              (identifier)
+              (arguments
+                (identifier)
+                (identifier))))))
+      (index_expression
+        (identifier)
+        (integer)))))
+
+================================================================================
+Match
+================================================================================
+
+def sum(xs: List<U32>, acc: U32) -> U32:
+  match xs:
+    case Nil{}:
+      acc
+    case Con{h, t}:
+      sum(t, (acc + h : U32))
+
+def go(n: Nat, +m: Nat) -> Nat:
+  match n m:
+    case 0n 0n: 0n
+    case 1n+p, 1n+q:
+      go(p, q)
+    case Work{+m} <> t, _:
+      t
+    case (s, proof) 2n:
+      s
+    case 42 1.5:
+      0n
+    case "s" 'c':
+      0n
+
+def absurd(e: Empty) -> Unit:
+  match e:
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (type_application
+          (identifier)
+          (identifier)))
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (match_statement
+        (identifier)
+        (case_clause
+          (constructor_pattern
+            (identifier))
+          (block
+            (identifier)))
+        (case_clause
+          (constructor_pattern
+            (identifier)
+            (identifier)
+            (identifier))
+          (block
+            (call
+              (identifier)
+              (arguments
+                (identifier)
+                (parenthesized_expression
+                  (binary_expression
+                    (identifier)
+                    (identifier))
+                  (identifier)))))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (match_statement
+        (identifier)
+        (identifier)
+        (case_clause
+          (natural)
+          (natural)
+          (block
+            (natural)))
+        (case_clause
+          (successor_pattern
+            (natural)
+            (identifier))
+          (successor_pattern
+            (natural)
+            (identifier))
+          (block
+            (call
+              (identifier)
+              (arguments
+                (identifier)
+                (identifier)))))
+        (case_clause
+          (cons_pattern
+            (constructor_pattern
+              (identifier)
+              (quantified_pattern
+                (identifier)))
+            (identifier))
+          (identifier)
+          (block
+            (identifier)))
+        (case_clause
+          (tuple_pattern
+            (identifier)
+            (identifier))
+          (natural)
+          (block
+            (identifier)))
+        (case_clause
+          (integer)
+          (float)
+          (block
+            (natural)))
+        (case_clause
+          (string
+            (string_content))
+          (char
+            (character))
+          (block
+            (natural))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (match_statement
+        (identifier)))))
+
+================================================================================
+Do blocks
+================================================================================
+
+def main() -> IO(Unit):
+  do IO<Unit>:
+    name : String <- IO.try(String, IO.get_env("USER"))
+    +n : U32 <- IO.pure(U32, 7)
+    x : U32 = 7
+    Unit <- IO.sleep(16)
+    f = absurd.arm
+    IO.print("Hello, " ++ name)
+    return "Hello, " ++ name
+
+def add_strs(a: String, b: String) -> Maybe<&2, U32>:
+  do Maybe<&2, U32>:
+    x : U32 <- U32.read(a)
+    y : U32 <- U32.read(b)
+    return (x + y : U32)
+
+def nested() -> U32:
+  run(do Id<U32>:
+    x : U32 <- {MkId{40} : Id<U32>}
+    return U32.add(x, 2))
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (call
+      (identifier)
+      (arguments
+        (identifier)))
+    (block
+      (do_block
+        (identifier)
+        (identifier)
+        (block
+          (bind_statement
+            (identifier)
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (call
+                  (scoped_identifier
+                    (identifier)
+                    (identifier))
+                  (arguments
+                    (string
+                      (string_content)))))))
+          (bind_statement
+            (quantified_pattern
+              (identifier))
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (integer))))
+          (bind_statement
+            (identifier)
+            (identifier)
+            (integer))
+          (bind_statement
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (integer))))
+          (let_statement
+            (identifier)
+            (scoped_identifier
+              (identifier)
+              (identifier)))
+          (call
+            (scoped_identifier
+              (identifier)
+              (identifier))
+            (arguments
+              (binary_expression
+                (string
+                  (string_content))
+                (identifier))))
+          (return_statement
+            (binary_expression
+              (string
+                (string_content))
+              (identifier)))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier)))
+    (type_application
+      (identifier)
+      (quantity)
+      (identifier))
+    (block
+      (do_block
+        (identifier)
+        (quantity)
+        (identifier)
+        (block
+          (bind_statement
+            (identifier)
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier))))
+          (bind_statement
+            (identifier)
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier))))
+          (return_statement
+            (parenthesized_expression
+              (binary_expression
+                (identifier)
+                (identifier))
+              (identifier)))))))
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (call
+        (identifier)
+        (arguments
+          (do_block
+            (identifier)
+            (identifier)
+            (block
+              (bind_statement
+                (identifier)
+                (identifier)
+                (annotation
+                  (constructor
+                    (identifier)
+                    (integer))
+                  (type_application
+                    (identifier)
+                    (identifier))))
+              (return_statement
+                (call
+                  (scoped_identifier
+                    (identifier)
+                    (identifier))
+                  (arguments
+                    (identifier)
+                    (integer)))))))))))
+
+================================================================================
+Rewrites
+================================================================================
+
+def add_zero(x):
+  match x:
+    case 0n:
+      {==}
+    case 1n+p:
+      %add_zero(p) : {1n+Nat.add(p, 0n) == 1n+_ : Nat}
+      {==}
+
+def swap(a, b, e):
+  %h@e : {ap(a) == ap(_) : U32}; {==}
+
+def fire(e):
+  %e : U32; 9
+
+def deep(e):
+  no_self_lt(a, (%Equal.sym(Nat, a, b, e) : le(1n+a, _); ab))
+
+def tail(k):
+  Different{k, e => ne(
+    %e : {curve(a,b,k) == pred(_) : Nat}
+    {==})}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (match_statement
+        (identifier)
+        (case_clause
+          (natural)
+          (block
+            (reflexivity)))
+        (case_clause
+          (successor_pattern
+            (natural)
+            (identifier))
+          (block
+            (rewrite
+              (call
+                (identifier)
+                (arguments
+                  (identifier)))
+              (equality_type
+                (successor
+                  (natural)
+                  (call
+                    (scoped_identifier
+                      (identifier)
+                      (identifier))
+                    (arguments
+                      (identifier)
+                      (natural))))
+                (successor
+                  (natural)
+                  (identifier))
+                (identifier)))
+            (reflexivity))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier))
+      (parameter
+        (identifier))
+      (parameter
+        (identifier)))
+    (block
+      (rewrite
+        (identifier)
+        (identifier)
+        (equality_type
+          (call
+            (identifier)
+            (arguments
+              (identifier)))
+          (call
+            (identifier)
+            (arguments
+              (identifier)))
+          (identifier))
+        (block
+          (reflexivity)))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (rewrite
+        (identifier)
+        (identifier)
+        (block
+          (integer)))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (call
+        (identifier)
+        (arguments
+          (identifier)
+          (parenthesized_expression
+            (rewrite
+              (call
+                (scoped_identifier
+                  (identifier)
+                  (identifier))
+                (arguments
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier)))
+              (call
+                (identifier)
+                (arguments
+                  (successor
+                    (natural)
+                    (identifier))
+                  (identifier)))
+              (block
+                (identifier))))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (constructor
+        (identifier)
+        (identifier)
+        (lambda
+          (identifier)
+          (block
+            (call
+              (identifier)
+              (arguments
+                (rewrite
+                  (identifier)
+                  (equality_type
+                    (call
+                      (identifier)
+                      (arguments
+                        (identifier)
+                        (identifier)
+                        (identifier)))
+                    (call
+                      (identifier)
+                      (arguments
+                        (identifier)))
+                    (identifier))
+                  (block
+                    (reflexivity)))))))))))

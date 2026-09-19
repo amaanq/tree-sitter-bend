@@ -1,0 +1,338 @@
+================================================================================
+Imports
+================================================================================
+
+import Base
+import ./math.bend as M
+import 0xabc123/main.bend as P
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (import_declaration
+    (import_path))
+  (import_declaration
+    (import_path)
+    (identifier))
+  (import_declaration
+    (import_path)
+    (identifier)))
+
+================================================================================
+Datatype
+================================================================================
+
+type Shape is Data:
+  Circle{r: U32}
+  Square{s: U32}
+
+type Empty is Data:
+
+type List<a, -A: Kind(a)> is Kind(a):
+  Nil{}
+  Con{head: A, tail: List<a, A>}
+
+type Word.Con<-p: Nat> is Data:
+  WCon{head: Bool, tail: Word(p)}
+
+type Nn is Data: Zz{} Ss{p: Nn}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (type_declaration
+    (identifier)
+    (kind)
+    (block
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier)))
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier)))))
+  (type_declaration
+    (identifier)
+    (kind))
+  (type_declaration
+    (identifier)
+    (type_parameters
+      (parameter
+        (identifier))
+      (parameter
+        (identifier)
+        (kind
+          (identifier))))
+    (kind
+      (identifier))
+    (block
+      (constructor_declaration
+        (identifier))
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier))
+        (field_declaration
+          (identifier)
+          (type_application
+            (identifier)
+            (identifier)
+            (identifier))))))
+  (type_declaration
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (type_parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (kind)
+    (block
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier))
+        (field_declaration
+          (identifier)
+          (call
+            (identifier)
+            (arguments
+              (identifier)))))))
+  (type_declaration
+    (identifier)
+    (kind)
+    (block
+      (constructor_declaration
+        (identifier))
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier))))))
+
+================================================================================
+Definitions
+================================================================================
+
+def area(x: Shape) -> U32:
+  x
+
+def replicate(-A: Data, n: Nat, +x: A) -> List<A>:
+  x
+
+def twice(~f: U32 -> U32, x: U32) -> U32:
+  f(f(x))
+
+def length(a, -A: Kind(a), xs: List<a, A>) -> Nat:
+  0n
+
+def add_zero(x):
+  {==}
+
+@unsafe def loop(n: Nat) -> Nat:
+  loop(n)
+
+def print(s: String) -> IO(Unit):
+  import "./effs/print.c"
+  import "./effs/print.js"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (identifier)))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (kind))
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (identifier)))
+    (type_application
+      (identifier)
+      (identifier))
+    (block
+      (identifier)))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (function_type
+          (identifier)
+          (identifier)))
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (call
+        (identifier)
+        (arguments
+          (call
+            (identifier)
+            (arguments
+              (identifier)))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier))
+      (parameter
+        (identifier)
+        (kind
+          (identifier)))
+      (parameter
+        (identifier)
+        (type_application
+          (identifier)
+          (identifier)
+          (identifier))))
+    (identifier)
+    (block
+      (natural)))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)))
+    (block
+      (reflexivity)))
+  (function_definition
+    (decorator)
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (call
+        (identifier)
+        (arguments
+          (identifier)))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (call
+      (identifier)
+      (arguments
+        (identifier)))
+    (block
+      (import_statement
+        (string
+          (string_content)))
+      (import_statement
+        (string
+          (string_content))))))
+
+================================================================================
+Laws
+================================================================================
+
+law add_zero:
+  for x: Nat
+  {Nat.add(x, 0n) == x : Nat}
+
+law division:
+  for a: Nat
+  for +b: Nat where Nat.is_lt(0n, b)
+  exs q: Nat
+  exs r: Nat
+  {a == Nat.add(Nat.mul(q, b), r) : Nat}
+
+law File:
+  Type
+
+law Chan:
+  for -A: Type
+  Data
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (law_declaration
+    (identifier)
+    (block
+      (for_clause
+        (identifier)
+        (identifier))
+      (equality_type
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (arguments
+            (identifier)
+            (natural)))
+        (identifier)
+        (identifier))))
+  (law_declaration
+    (identifier)
+    (block
+      (for_clause
+        (identifier)
+        (identifier))
+      (for_clause
+        (identifier)
+        (identifier)
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (arguments
+            (natural)
+            (identifier))))
+      (exists_clause
+        (identifier)
+        (identifier))
+      (exists_clause
+        (identifier)
+        (identifier))
+      (equality_type
+        (identifier)
+        (call
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (arguments
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (identifier)))
+            (identifier)))
+        (identifier))))
+  (law_declaration
+    (identifier)
+    (block
+      (kind)))
+  (law_declaration
+    (identifier)
+    (block
+      (for_clause
+        (identifier)
+        (kind))
+      (kind))))

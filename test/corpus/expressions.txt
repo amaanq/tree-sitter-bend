@@ -664,3 +664,121 @@ def braces() -> U32:
         (hole
           (identifier)))
       (identifier))))
+
+================================================================================
+Rewrite tails on the same line
+================================================================================
+
+def a(x: Nat, e: {x == 0n : Nat}) -> Nat:
+  f(x, %e : {_ == 0n : Nat} earlier)
+
+def b(x: Nat) -> Nat:
+  small = {%sub(x) : {Nat.is_lt(1n+x, _) == True{} : Bool} earlier : {Nat.is_lt(x, 2n) == True{} : Bool}}
+  small
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (equality_type
+          (identifier)
+          (natural)
+          (identifier))))
+    (identifier)
+    (block
+      (call
+        (identifier)
+        (arguments
+          (identifier)
+          (rewrite
+            (identifier)
+            (equality_type
+              (identifier)
+              (natural)
+              (identifier))
+            (block
+              (identifier)))))))
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (annotation
+          (rewrite
+            (call
+              (identifier)
+              (arguments
+                (identifier)))
+            (equality_type
+              (call
+                (scoped_identifier
+                  (identifier)
+                  (identifier))
+                (arguments
+                  (successor
+                    (natural)
+                    (identifier))
+                  (identifier)))
+              (constructor
+                (identifier))
+              (identifier))
+            (block
+              (identifier)))
+          (equality_type
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (natural)))
+            (constructor
+              (identifier))
+            (identifier))))
+      (identifier))))
+
+================================================================================
+Reserved words heading dotted names
+================================================================================
+
+def run(ps: P) -> P:
+  Done{(do.call(ps), match.valid(ps))}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (constructor
+        (identifier)
+        (tuple
+          (call
+            (scoped_identifier
+              (identifier)
+              (identifier))
+            (arguments
+              (identifier)))
+          (call
+            (scoped_identifier
+              (identifier)
+              (identifier))
+            (arguments
+              (identifier))))))))

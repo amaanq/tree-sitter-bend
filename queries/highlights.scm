@@ -56,10 +56,18 @@
   ])
 
 (field_declaration
-  name: (identifier) @variable.member)
+  name: [
+    (identifier) @variable.member
+    (scoped_identifier
+      (identifier) @variable.member .)
+  ])
 
 (parameter
-  name: (identifier) @variable.parameter)
+  name: [
+    (identifier) @variable.parameter
+    (scoped_identifier
+      (identifier) @variable.parameter .)
+  ])
 
 (for_clause
   name: (identifier) @variable.parameter)

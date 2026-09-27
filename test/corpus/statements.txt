@@ -684,3 +684,105 @@ def tail(k):
                     (identifier))
                   (block
                     (reflexivity)))))))))))
+
+================================================================================
+Typed lets
+================================================================================
+
+def main() -> U32:
+  -n : Nat = 5n
+  +size : U32 = 30
+  (x : U32 = 1; y : U32 = 2; size + x + y : U32)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (let_statement
+        (quantified_pattern
+          (identifier))
+        (identifier)
+        (natural))
+      (let_statement
+        (quantified_pattern
+          (identifier))
+        (identifier)
+        (integer))
+      (parenthesized_expression
+        (let_statement
+          (identifier)
+          (identifier)
+          (integer))
+        (let_statement
+          (identifier)
+          (identifier)
+          (integer))
+        (binary_expression
+          (binary_expression
+            (identifier)
+            (identifier))
+          (identifier))
+        (identifier)))))
+
+================================================================================
+Parenthesized patterns
+================================================================================
+
+def firsts(n: Nat, xs: List<&2, List<&2, U32>>) -> Nat:
+  match n xs:
+    case 1n+(+p) (h <> t) <> rest:
+      p
+    case _ a <> (b <> rest):
+      0n
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (identifier)
+        (type_application
+          (identifier)
+          (quantity)
+          (type_application
+            (identifier)
+            (quantity)
+            (identifier)))))
+    (identifier)
+    (block
+      (match_statement
+        (identifier)
+        (identifier)
+        (case_clause
+          (successor_pattern
+            (natural)
+            (parenthesized_pattern
+              (quantified_pattern
+                (identifier))))
+          (cons_pattern
+            (parenthesized_pattern
+              (cons_pattern
+                (identifier)
+                (identifier)))
+            (identifier))
+          (block
+            (identifier)))
+        (case_clause
+          (identifier)
+          (cons_pattern
+            (identifier)
+            (parenthesized_pattern
+              (cons_pattern
+                (identifier)
+                (identifier))))
+          (block
+            (natural)))))))

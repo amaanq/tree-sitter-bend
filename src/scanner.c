@@ -18,9 +18,10 @@ enum TokenType {
 };
 
 // Bodies stack by the column of their first statement, and a shallower line or a closing bracket
-// ends one. The high bit marks a lambda's body.
+// ends one. The high bit marks a lambda's body, the next one a rewrite's tail.
 #define LAMBDA_BIT 0x8000
-#define COLUMN_MASK 0x7fff
+#define TAIL_BIT 0x4000
+#define COLUMN_MASK 0x3fff
 
 typedef struct {
    Array(uint16_t) blocks;
@@ -41,6 +42,8 @@ static inline bool is_name_char(int32_t c) {
 static inline uint16_t block_column(uint16_t block) { return block & COLUMN_MASK; }
 
 static inline bool block_is_lambda(uint16_t block) { return (block & LAMBDA_BIT) != 0; }
+
+static inline bool block_is_tail(uint16_t block) { return (block & TAIL_BIT) != 0; }
 
 static bool scan_statement_keyword(TSLexer *lexer) {
    const char *word = lexer->lookahead == 'c' ? "case" : lexer->lookahead == 'r' ? "return" : NULL;
@@ -181,9 +184,11 @@ bool tree_sitter_bend_external_scanner_scan(void *payload, TSLexer *lexer,
       }
    }
 
-   // A rewrite's ";" opens its tail, not the end of the enclosing lambda.
+   // A rewrite's ";" opens its tail, not the end of the enclosing lambda. A ":" ends a lambda's
+   // body or a rewrite's tail, as the annotation around it goes on: "{%e : P\n  x : T}".
    bool closes = c == ')' || c == ']' || c == '}' || c == ',' || (c == '>' && !spaced) ||
-                 (block_is_lambda(block) && (c == ':' || (c == ';' && !valid_symbols[TAIL_BEGIN])));
+                 ((block_is_lambda(block) || block_is_tail(block)) && c == ':') ||
+                 (block_is_lambda(block) && c == ';' && !valid_symbols[TAIL_BEGIN]);
 
    // A required body starts wherever its first token is, so an "x =>" chain
    // may drop left on the next line; match cases, being optional, must indent
@@ -213,7 +218,7 @@ bool tree_sitter_bend_external_scanner_scan(void *payload, TSLexer *lexer,
    }
 
    if (valid_symbols[TAIL_BEGIN] && newline && !closes && column > 0) {
-      array_push(&scanner->blocks, (uint16_t)column);
+      array_push(&scanner->blocks, (uint16_t)(column | TAIL_BIT));
       lexer->result_symbol = TAIL_BEGIN;
       return true;
    }

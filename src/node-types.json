@@ -134,6 +134,10 @@
         "named": true
       },
       {
+        "type": "parenthesized_pattern",
+        "named": true
+      },
+      {
         "type": "quantified_pattern",
         "named": true
       },
@@ -516,7 +520,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "_statement",
@@ -955,6 +959,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
           }
         ]
       },
@@ -1023,6 +1031,10 @@
           {
             "type": "-",
             "named": false
+          },
+          {
+            "type": "~",
+            "named": false
           }
         ]
       },
@@ -1085,6 +1097,16 @@
             "named": true
           }
         ]
+      },
+      "unsafe": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "?",
+            "named": false
+          }
+        ]
       }
     },
     "children": {
@@ -1139,6 +1161,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "identifier",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "import_declaration",
@@ -1300,6 +1327,16 @@
         "types": [
           {
             "type": "pattern",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
             "named": true
           }
         ]
@@ -1470,6 +1507,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
           }
         ]
       },
@@ -1539,6 +1580,21 @@
       "types": [
         {
           "type": "_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parenthesized_pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "pattern",
           "named": true
         }
       ]
@@ -2182,10 +2238,6 @@
   {
     "type": "for",
     "named": false
-  },
-  {
-    "type": "identifier",
-    "named": true
   },
   {
     "type": "import",

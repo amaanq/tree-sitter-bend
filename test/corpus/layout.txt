@@ -237,3 +237,46 @@ law undo:
               (identifier)
               (identifier)))
           (identifier))))))
+
+================================================================================
+Rewrite tails inside braces
+================================================================================
+
+def c(ee: E) -> G:
+  hr = {%ee : gv.In(_, ws)
+    hh : gv.In(body, ws)}
+  hr
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (let_statement
+        (identifier)
+        (annotation
+          (rewrite
+            (identifier)
+            (call
+              (scoped_identifier
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)
+                (identifier)))
+            (block
+              (identifier)))
+          (call
+            (scoped_identifier
+              (identifier)
+              (identifier))
+            (arguments
+              (identifier)
+              (identifier)))))
+      (identifier))))

@@ -129,18 +129,31 @@ export default grammar({
       $._block_end,
     ),
     // Ctr ::= Name "{" [Bind ","?] "}"
+    // The commas are optional, so fields may sit one per line.
     constructor_declaration: $ => seq(
       field('name', $._name),
       '{',
-      commaSep(field('field', alias($.parameter, $.field_declaration))),
+      repeat(seq(field('field', $.field_declaration), optional(','))),
       '}',
     ),
+    // A field's name may be dotted, as in "Outer{a: Inner, a.b: U32}".
+    field_declaration: $ => choice(
+      seq(
+        optional(field('quantifier', choice('-', '+', '~'))),
+        field('name', $._name),
+        ':',
+        field('type', $.expression),
+      ),
+      field('name', $._name),
+    ),
 
-    // Def ::= ("@unsafe")? "def" Name "(" [Bind ","?] ")" ("->" Term)? ":" Body
+    // Def ::= ("@unsafe")? "def" Name "?"? "(" [Bind ","?] ")" ("->" Term)? ":" Body
+    // "def f?(..)" is "@unsafe def f(..)".
     function_definition: $ => seq(
       optional($.decorator),
       'def',
       field('name', $._name),
+      optional(field('unsafe', token.immediate('?'))),
       field('parameters', $.parameters),
       optional(seq('->', field('return_type', $.expression))),
       ':',
@@ -152,7 +165,7 @@ export default grammar({
     parameter: $ => choice(
       seq(
         optional(field('quantifier', choice('-', '+', '~'))),
-        field('name', $.identifier),
+        field('name', $._name),
         ':',
         field('type', $.expression),
       ),
@@ -172,10 +185,10 @@ export default grammar({
       $._statements,
       $._block_end,
     ),
-    // Clause ::= ("for" Quant | "exs") Name ":" Term ("where" Term)?
+    // Clause ::= ("for" (Quant | "~") | "exs") Name ":" Term ("where" Term)?
     for_clause: $ => seq(
       'for',
-      optional(field('quantifier', choice('-', '+'))),
+      optional(field('quantifier', choice('-', '+', '~'))),
       field('name', $.identifier),
       ':',
       field('type', $.expression),
@@ -189,9 +202,17 @@ export default grammar({
     ),
 
     // Body ::= Match | Local | Reply
-    block: $ => seq($._block_begin, $._statements, $._block_end),
+    block: $ => seq($._block_begin, $._body_statements, $._block_end),
 
     _statements: $ => sep1(choice($._newline, ';'), $._statement),
+    // A def's or a case's body, and a group in parentheses, also take typed
+    // lets; in a lambda's body or a rewrite's tail, which may sit inside an
+    // annotation's braces, "x : T" reads as the annotation's instead.
+    _body_statements: $ => sep1(choice($._newline, ';'), $._body_statement),
+    _body_statement: $ => choice(
+      $._statement,
+      alias($._typed_let_statement, $.let_statement),
+    ),
 
     _statement: $ => choice(
       $.let_statement,
@@ -204,6 +225,15 @@ export default grammar({
     // Local ::= (Quant Name | Term)+ "=" Term+ ";"? Body
     let_statement: $ => seq(
       field('pattern', $.pattern),
+      '=',
+      field('value', $.expression),
+    ),
+    // A typed let binds a name: "+size : U32 = a_size(g)". In a do block
+    // the same line is a DoLet.
+    _typed_let_statement: $ => seq(
+      field('pattern', $._binder),
+      ':',
+      field('type', $.expression),
       '=',
       field('value', $.expression),
     ),
@@ -248,6 +278,7 @@ export default grammar({
       $.identifier,
       $.quantified_pattern,
       $.constructor_pattern,
+      $.parenthesized_pattern,
       $.tuple_pattern,
       $.list_pattern,
       $.cons_pattern,
@@ -268,6 +299,8 @@ export default grammar({
       commaSep(field('field', $.pattern)),
       '}',
     ),
+    // A pattern in parentheses: "1n+(+p)", "(h <> t) <> rest".
+    parenthesized_pattern: $ => seq('(', $.pattern, ')'),
     tuple_pattern: $ => seq(
       '(',
       $.pattern,
@@ -483,9 +516,12 @@ export default grammar({
       optional(field('body', choice(
         seq(';', $.block),
         alias($._tail_block, $.block),
+        alias($._inline_tail, $.block),
       ))),
     )),
     _tail_block: $ => seq($._tail_begin, $._statements, $._block_end),
+    // The ";" is optional: "%e : P f" rewrites with e, then goes on with f.
+    _inline_tail: $ => prec(-1, $.expression),
     // A tail token valid after any expression would keep every expression
     // state from merging.
     _motive: $ => choice(
@@ -552,7 +588,7 @@ export default grammar({
       optional(seq(':', field('type', $.expression))),
       ')',
     ),
-    _parenthesized_body: $ => sep1(';', $._statement),
+    _parenthesized_body: $ => sep1(';', $._body_statement),
 
     // List ::= "[" [A ","?] "]"
     list: $ => seq('[', commaSep(field('element', $.expression)), ']'),
@@ -631,11 +667,15 @@ export default grammar({
       ),
     )),
 
-    // A dotted name is one lexeme to Bend, but its segments are namespaces.
+    // A dotted name is one lexeme to Bend, but its segments are namespaces;
+    // its first may be a reserved word, as in "do.call" or "match.valid".
     _name: $ => choice($.identifier, $.scoped_identifier),
     scoped_identifier: $ => seq(
-      $.identifier,
+      choice($.identifier, alias($._reserved_segment, $.identifier)),
       repeat1(seq(token.immediate('.'), alias(token.immediate(/[A-Za-z0-9_]+/), $.identifier))),
+    ),
+    _reserved_segment: _ => choice(
+      'def', 'type', 'law', 'match', 'case', 'do', 'return', 'for', 'exs', 'where', 'is', 'import',
     ),
     identifier: _ => /[A-Za-z_][A-Za-z0-9_]*/,
 

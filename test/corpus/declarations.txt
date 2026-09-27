@@ -336,3 +336,169 @@ law Chan:
         (identifier)
         (kind))
       (kind))))
+
+================================================================================
+Unsafe marks
+================================================================================
+
+def wnf?(x: Term) -> Term:
+  x
+
+def Laws.false_law?():
+  ?todo
+
+@unsafe
+def spin() -> Empty:
+  spin()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (identifier)))
+    (identifier)
+    (block
+      (identifier)))
+  (function_definition
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (parameters)
+    (block
+      (hole
+        (identifier))))
+  (function_definition
+    (decorator)
+    (identifier)
+    (parameters)
+    (identifier)
+    (block
+      (call
+        (identifier)
+        (arguments)))))
+
+================================================================================
+Datatype fields
+================================================================================
+
+type Outer is Data:
+  Outer{a: Inner, a.b: U32}
+
+type Cc is Data:
+  Cc{
+    no_store: Bool
+    max_age: U32,
+    +tags: List<&2, String>
+  }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (type_declaration
+    (identifier)
+    (kind)
+    (block
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier))
+        (field_declaration
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))))
+  (type_declaration
+    (identifier)
+    (kind)
+    (block
+      (constructor_declaration
+        (identifier)
+        (field_declaration
+          (identifier)
+          (identifier))
+        (field_declaration
+          (identifier)
+          (identifier))
+        (field_declaration
+          (identifier)
+          (type_application
+            (identifier)
+            (quantity)
+            (identifier)))))))
+
+================================================================================
+Dotted parameters
+================================================================================
+
+def hole.fits(+ind: Nat, +next.indented: Bool) -> Bool:
+  next.indented
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (parameters
+      (parameter
+        (identifier)
+        (identifier))
+      (parameter
+        (scoped_identifier
+          (identifier)
+          (identifier))
+        (identifier)))
+    (identifier)
+    (block
+      (scoped_identifier
+        (identifier)
+        (identifier)))))
+
+================================================================================
+Template laws
+================================================================================
+
+law fold_assoc:
+  for ~op: Nat -> Nat -> Nat
+  for +xs: List<&2, Nat>
+  {fold(~op, xs) == fold(~op, xs) : Nat}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (law_declaration
+    (identifier)
+    (block
+      (for_clause
+        (identifier)
+        (function_type
+          (identifier)
+          (function_type
+            (identifier)
+            (identifier))))
+      (for_clause
+        (identifier)
+        (type_application
+          (identifier)
+          (quantity)
+          (identifier)))
+      (equality_type
+        (call
+          (identifier)
+          (arguments
+            (template_argument
+              (identifier))
+            (identifier)))
+        (call
+          (identifier)
+          (arguments
+            (template_argument
+              (identifier))
+            (identifier)))
+        (identifier)))))
